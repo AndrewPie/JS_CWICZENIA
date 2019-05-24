@@ -1,0 +1,62 @@
+<html>
+    <head>
+        <meta encoding="utf-8" />
+        <title>Calc</title>
+        <style>
+            html { height: 100%;  }
+            body {
+                height: 100%;
+                margin: 0;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background: rgb(201,222,150);
+                background: -moz-linear-gradient(top, rgba(201,222,150,1) 0%, rgba(138,182,107,1) 44%, rgba(57,130,53,1) 100%);
+                background: -webkit-linear-gradient(top, rgba(201,222,150,1) 0%,rgba(138,182,107,1) 44%,rgba(57,130,53,1) 100%);
+                background: linear-gradient(to bottom, rgba(201,222,150,1) 0%,rgba(138,182,107,1) 44%,rgba(57,130,53,1) 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c9de96', endColorstr='#398235',GradientType=0 );
+                text-align: center;
+                font-family: sans-serif;
+            }
+            #main {
+                display: inline-block;
+                width: 1000px;
+                border-style: none dotted;
+                border-color: rgba(0,0,0,0.1);
+                margin-top: 25px;
+                padding: 15px;
+                background-color: rgba(0,0,0,0.05);
+            }
+            .sol {
+                font-size: large;
+                display: inline-block;
+                min-width: 80px;
+                background-color: rgba(0,0,0,0.2);
+            }
+            input,select {
+                font-size: large;
+                background-color:  rgba(0,0,0,0.2);
+                border: none;
+                color: #000;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="main">
+            <h1>Hyper calculator v0.1</h1>
+            <form>
+                <input type="input" name="val_1" placeholder="give value" />
+                <select name="op">
+                    <option value="add">+</option>
+                    <option value="sub">-</option>
+                    <option value="mul">*</option>
+                    <option value="div">/</option>
+                    <option value="mod">mod</option>
+                </select>
+                <input type="input" name="val_2" placeholder="give value" />
+                =
+                <span id="output" class="sol">&nbsp;</span>
+                <input type="submit" value="OK" />
+            </form>
+        </div>
+    </body>
+</html>

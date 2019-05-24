@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="pl">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>SVG</title>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/vader/jquery-ui.min.css">
+        <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+        <style>
+            html,
+            body {
+                background: #e0e0e0;
+                margin: 0px;
+                padding: 0px;
+                text-align: center;
+            }
+            #svg-main {
+                display: inline-block;
+                /* position: absolute; */
+                bottom: 0px;
+                left: 0px;
+                width: 100%;
+                height: 100%;
+                background: black;
+                margin: 0px;
+                padding: 0px;
+
+            }
+            #game-window {
+                width: 640px;
+                height: 480px;
+            }
+        </style>
+    </head>
+    <body id="body-top">
+        <div id="game-window">
+            <svg id="svg-main"></svg>
+        </div>
+        <script>
+            // Tank data
+            var tankX = 0;
+
+            // Barrel data
+            var barrelX = 0;
+            var barrelY = 0;
+            var bulletLen = 64;
+            var angleD = 1;
+
+            // Bullet data
+            var bulletX = 0;
+            var bulletY = 0;
+            var bulletDx = 0;
+            var bulletDy = 0;
+
+            // Shut condition
+            var shotAngle = 0;
+            var shutForce = 8;
+            var gravity = 0.06;
+            var wind = 0; // TODO: random change
+            var targetDistance = 650; // TODO: change after hit
+            var groundLevel = -50; // for hit detection
+
+            var mode = 'MODE_IDLE';
+
+            function keyboardSupport(event) {
+              if (mode == 'MODE_IDLE') {
+                if (event.key == 'W' || event.key == 'w') shotAngle += angleD;
+                if (event.key == 'S' || event.key == 's') shotAngle -= angleD;
+                if (event.key == 'A' || event.key == 'a') tankX--;
+                if (event.key == 'D' || event.key == 'd') tankX++;
+                if (shotAngle < 0) shotAngle = 0;
+                if (shotAngle > 90) shotAngle = 90;
+                if (event.key == ' ') mode = 'MODE_SHOT_INIT';
+              }
+            }
+
+            function setup() {
+              $('#bullet').hide();
+              $('#bullet-advanced').hide();
+              $('#flash').hide();
+              $('#wall').hide();
+              $('#boom').hide();
+              $('#game-window').dialog(
+                {
+                  width:  720,
+                  height: 640,
+                  title: 'OPSS Tanks',
+                }
+              );
+              setInterval(loop, 20);
+            }
+
+            function loop() {
+              switch (mode) {
+                case 'MODE_IDLE':
+                  var $l = $('#barrel_a');
+                  barrelX = parseFloat($l.attr('x'));
+                  barrelY = parseFloat($l.attr('y')) + (parseFloat($l.attr('height')) / 2);
+                  $('#barrel').attr('transform',
+                    'rotate(' + (shotAngle * -1) + ' ' + barrelX + ' ' + barrelY + ')');
+                  $('#tank').attr('transform', 'translate(' + tankX + ' 0)');
+                  $('#shout-angle-text').html(shotAngle + ' &deg;');
+                  break;
+                case 'MODE_SHOT_INIT':
+                  $('#flash').show(0).delay(100).hide(0);
+                  $('#bullet').show();
+                  bulletDx = shutForce * Math.cos(Math.PI * shotAngle / 180);
+                  bulletDy = shutForce * Math.sin(Math.PI * shotAngle / 180);
+                  bulletX = bulletLen * Math.cos(Math.PI * shotAngle / 180) + tankX;
+                  bulletY = bulletLen * Math.sin(Math.PI * shotAngle / 180);
+                  mode = 'MODE_SHOT_RUNNIG';
+                case 'MODE_SHOT_RUNNIG':
+                  bulletX += bulletDx;
+                  bulletY += bulletDy;
+                  bulletDy -= gravity;
+                  bulletDx -= wind;
+                  var t = ' translate(' + (bulletX + barrelX) + ' ' + (-bulletY + barrelY) + ')';
+                  $('#bullet').attr('transform', t);
+                  if (bulletY <= groundLevel) mode = 'MODE_SHOT_DONE';
+                  else break;
+                case 'MODE_SHOT_DONE':
+                  $('#bullet').hide();
+                  $('#boom').attr('transform', $('#bullet').attr('transform'));
+                  $('#boom').show(0).delay(500).hide(0);
+                  mode = 'MODE_IDLE';
+                  $('#last-miss-text').html(Math.round(Math.abs(targetDistance - bulletX)) + ' px');
+                  break;
+              }
+            }
+
+            $(function () {
+              $('#svg-main').load('plansza.svg', function () {
+                setTimeout(setup, 5);
+                $('body').keypress(keyboardSupport);
+              });
+            });
+        </script>
+    </body>
+</html>

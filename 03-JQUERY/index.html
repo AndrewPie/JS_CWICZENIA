@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="pl">
+	<head>
+		<meta charset="utf-8">
+		<title>Game Of Life</title>
+		<link href="jquery-ui.min.css" rel="stylesheet">
+		<style>
+			body,html {
+				margin: 0px;
+				padding: 0px;
+				background-color: #f0f0f0;
+			}
+			#bar {
+				position: fixed;
+				bottom: 2px;
+				left: 50%;
+				margin-left: -237px;
+				width: 460px;
+				padding: 7px;
+				text-align: center;
+				opacity: 0.3;
+			}
+			#bar:hover {
+				opacity: 1;
+			}
+			#controls {
+				text-align: center;
+
+			}
+			#controls label {
+				width: 200px;
+				display: inline-block;
+			}
+			#controls input {
+				width: 200px;
+			}
+			#areaWrapper {
+				text-align: center;
+			}
+			#area {
+				background-color: #ffffff;
+				border: 1px solid #dedede;
+				text-align: center;
+				display: inline-block;
+				padding: 5px;
+				margin-top: 5px;
+				line-break: strict;
+			}
+			img.cell {
+				margin: 0px;
+				border: 1px solid #d0d0d0;
+				padding: 0px;
+				width: 48px;
+				height: 48px;
+			}
+			#step {
+				display: inline-block;
+				width: 40px;
+				background-color: #222;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- Obszar wyświetlania symulacji -->
+		<div id="areaWrapper">
+			<div id="area" class="ui-corner-all">
+				Aby rozpocząć wygeneruj plansze
+			</div>
+		</div>
+		<!-- Okienko panelu kontrolnego -->
+		<div id="controls">
+			<label for="area-x">Szerokość</label>
+			<input id="area-x" value="10" type="number" min="3" /><br/>
+			<label for="area-y">Wysokość</label>
+			<input id="area-y" value="10" type="number" min="3" /><br/>
+			<button id="generate-area-button">Generuj plansze</button>
+			<hr/>
+			<label for="live-prob">Szansa na losowe życie</label>
+			<input id="live-prob" value="0.4" type="number" min="0.01" max="1" step="0.01" /><br/>
+			<button id="random-area-button">Losuj</button>
+			<hr/>
+			<label for="speed">Szybkość w ms</label>
+			<input id="speed" value="600" type="number" min="40" step="10" /><br/>
+		</div>
+		<!-- Pasek narzędziowy -->
+		<div id="bar" class="ui-widget ui-widget-content ui-corner-all">
+			Krok:<span id="step">0</span>
+			<button id="play-pause-button">Zatrzymaj/Wznów</button>
+			<button id="show-panel-button">Pokaż panel</button>
+		</div>
+		<!-- Import biblioteki -->
+		<script src="jquery.js"></script>
+		<script src="jquery-ui.min.js"></script>
+		<!-- Skrypty JS -->
+		<script>
+			/* Funkcja inicjująca */
+			function simulatorInit(){
+				var dead = "dead.gif"; // Obrazek martwy
+				var alive = "alive.gif"; // Obrazek żywy
+
+				/* Utworzenie okna dialogowego z obiektu o id=controls  */
+				// $('#controls')
+				/* Ostylowanie jako przycisk elementu oraz
+				dodanie zdarzenie po kliknięciu na element  */
+
+				// Przycisk pokazujący okno ustawień
+				function showControl(){
+				}
+				$('#show-panel-button').button().click(showControl);
+
+				// Generator obszaru
+				function generateArea(){
+				}
+				$('#generate-area-button').button().click(generateArea);
+
+
+				// Losowanie obszaru
+				function randomCellState(cellNo,cellNode){
+				}
+				function randomArea(){
+				}
+				$('#random-area-button').button().click(randomArea);
+
+				// Symulacja
+				var simulationTimeout = false;
+				function nextStateEval(cellNo,cellNode){
+				}
+				function nextStateSwitch(cellNo,cellNode){
+				}
+				function simulationStep(){
+					var step = $('#step');
+					var step_val = parseInt(step.html());
+					step.html(step_val+1);
+					$('img.cell').each(nextStateEval);
+					$('img.cell').each(nextStateSwitch);
+					simulationTimeout = setTimeout(simulationStep,parseInt($('#speed').val()));
+				}
+				function playPause(){
+				}
+				$('#play-pause-button').button().click(playPause);
+			}
+			/* Uruchomienie funkcji po załadowaniu się strony w całości */
+			$(document).ready(simulatorInit);
+		</script>
+	</body>
+</html>

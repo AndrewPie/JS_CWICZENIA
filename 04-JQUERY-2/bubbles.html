@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="pl">
+	<!-- look for example at https://youtu.be/4PzX59g4m0s -->
+	<head>
+		<meta charset="utf-8">
+		<title>Sort demo</title>
+		<link href="jquery-ui.min.css" rel="stylesheet">
+		<style>
+			body,html {
+				margin: 0px;
+				padding: 0px;
+				background-color: #f0f0f0;
+			}
+			#bar {
+				position: fixed;
+				bottom: 2px;
+				left: 50%;
+				margin-left: -457px;
+				width: 900px;
+				padding: 7px;
+				text-align: center;
+				opacity: 0.3;
+    			transition: opacity .6s;
+			}
+			#bar:hover {
+				opacity: 1;
+			}
+			#arrayWrapper {
+				text-align: center;
+			}
+			#array {
+				background-color: #ffffff;
+				border: 1px solid #dedede;
+				text-align: center;
+				display: inline-block;
+				padding: 5px;
+				margin-top: 5px;
+				line-break: strict;
+			}
+			#step {
+				display: inline-block;
+				width: 40px;
+				background-color: #888;
+			}
+  			.rotaredText {
+				transform: rotate(-90deg);
+				-webkit-transform: rotate(-90deg);
+				-moz-transform: rotate(-90deg);
+				-ms-transform: rotate(-90deg);
+				-o-transform: rotate(-90deg);
+				filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+				position: absolute;
+				z-index: 2;
+				top: 250px;
+				left: -70px;
+				padding: 3px;
+				opacity: 0.3;
+    			transition: opacity .6s;
+			}
+			.arrayElementWrapper:hover .rotaredText  {
+				opacity: 1;
+			}
+			.arrayElementActive:hover .rotaredText  {
+				opacity: 1;
+			}
+			.arrayElement {
+				border: 1px solid black;
+				background: #aaa;
+				display: block;
+				position: absolute;
+				bottom: 5px;
+				left: 5px;
+				width: 30px;
+				z-index: 1;
+			}
+			.arrayElementWrapper, .arrayElementActive {
+				position: relative;
+				display: inline-block;
+				width: 35px;
+				padding: 5px;
+				height: 610px;
+				border: 1px solid #ddd;
+				background: #eee;
+				margin: 3px;
+			}
+			.arrayElementWrapper {background: #eee;}
+			.arrayElementActive {background: #0e0;}
+		</style>
+	</head>
+	<body>
+		<!-- Obszar wyświetlania symulacji -->
+		<div id="arrayWrapper">
+			<div id="array" class="ui-corner-all"></div>
+		</div>
+		<!-- Pasek narzędziowy -->
+		<div id="bar" class="ui-widget ui-widget-content ui-corner-all">
+			Step:<span id="step" class="ui-corner-all">0</span> |
+			<button id="do-step-button">Sort - do one step</button>
+			<button id="do-sort-button">Sort - until done</button> |
+			<label for="array-len">Array size</label>
+			<input id="array-len" value="10" type="number" min="3" />
+			<button id="generate-array-button">Random</button>
+		</div>
+		<!-- Import biblioteki -->
+		<script src="jquery.js"></script>
+		<script src="jquery-ui.min.js"></script>
+		<!-- Skrypty JS -->
+		<script>
+			// Globalne zmienne
+			var randomArray = [];
+			var current_element = 0;
+			var sorted = false;
+			// Funkcja rysująca tablcę
+			function showArray(activeElements){
+				if(!activeElements) activeElements = [];
+				var a = $('#array');
+				a.html('');
+				for(var i=0;i<randomArray.length;i++){
+					var w = $('<div>');
+					var p = $('<div>');
+					var t = $('<div>');
+					w.append(t);
+					w.append(p);
+					t.addClass('rotaredText');
+					p.addClass('arrayElement');
+					if(activeElements.indexOf(i)>-1){
+						w.addClass('arrayElementActive');
+					} else {
+						w.addClass('arrayElementWrapper');
+					}
+					t.text(randomArray[i]);
+					p.css('height',randomArray[i]*600);
+					a.append(w);
+				}
+			}
+			// Generowanie losowej tablicy i zerowanie stanu
+			function genRandomArray(){
+				var arrayLen = parseFloat($('#array-len').val());
+				randomArray = [];
+				for(var i=0;i<arrayLen;i++){
+					randomArray.push(Math.random());
+				}
+				current_element = 0;
+				sorted = true;
+			}
+			// Zwiększa licznik iteracji o jeden
+			function nextStepOnCounter(){
+				var step = $('#step');
+				var step_val = parseInt(step.html());
+				step.html(step_val+1);
+			}
+			// Wykonuje jeden krok sortowania
+			function bubbleSortStep(){
+
+			}
+			// Sortuje tablice do skutku
+			function doBuubleSort(){
+				
+			}
+			function init(){
+				// Przypnij zdarzenia do przycisków
+				$('#generate-array-button').button().click(function(){
+					genRandomArray();
+					showArray();
+				});
+				$('#do-step-button').button().click(bubbleSortStep);
+				$('#do-sort-button').button().click(doBuubleSort);
+				// Wygeneruj i pokaż tablicę
+				genRandomArray();
+				showArray();
+			}
+			// Uruchomienie funkcji po załadowaniu się strony w całości
+			$(init);
+		</script>
+	</body>
+</html>

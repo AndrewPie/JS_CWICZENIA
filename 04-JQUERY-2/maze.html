@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="pl">
+	<!-- look for example at https://youtu.be/Tf0N26YOINQ -->
+	<head>
+		<meta charset="utf-8">
+		<title>Maze demo</title>
+		<link href="jquery-ui.min.css" rel="stylesheet">
+		<style>
+			body,html {
+				margin: 0px;
+				padding: 0px;
+				background-color: #f0f0f0;
+			}
+			#bar {
+				position: fixed;
+				bottom: 2px;
+				left: 50%;
+				margin-left: -457px;
+				width: 900px;
+				padding: 7px;
+				text-align: center;
+				opacity: 0.3;
+    			transition: opacity .6s;
+			}
+			#bar:hover {
+				opacity: 1;
+			}
+			#mazeWrapper {
+				text-align: center;
+			}
+			#maze {
+				background-color: #ffffff;
+				border: 1px solid #dedede;
+				text-align: center;
+				display: inline-block;
+				padding: 5px;
+				margin-top: 5px;
+				line-break: strict;
+				line-height: 0px;
+			}
+			#step {
+				display: inline-block;
+				width: 40px;
+				background-color: #888;
+			}
+  			.mazeElement {
+				width: 32px;
+				height: 32px;
+				display: inline-block;
+				padding: 0px;
+				margin: 0px;
+				overflow: hidden;
+				text-align: center;
+				line-height: 32px;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- Obszar wyświetlania symulacji -->
+		<div id="mazeWrapper">
+			<div id="maze" class="ui-corner-all"></div>
+		</div>
+		<!-- Pasek narzędziowy -->
+		<div id="bar" class="ui-widget ui-widget-content ui-corner-all">
+			<button id="do-step-button">Solve - do one step</button>
+			<button id="do-all-button">Solve - until done</button>
+		</div>
+		<!-- Import biblioteki -->
+		<script src="jquery.js"></script>
+		<script src="jquery-ui.min.js"></script>
+		<!-- Skrypty JS -->
+		<script>
+			// Globalne zmienne
+			var h =  1; // hero - start point
+			var _ =  0; // empty
+			var w = -1; // wall
+			var t = -2; // exit - target point
+			var maze = [
+				[w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,],
+				[w,_,w,_,_,_,w,_,_,_,w,_,_,_,_,w,],
+				[w,_,_,_,w,_,_,_,w,_,_,_,w,_,w,w,],
+				[w,_,w,w,w,w,w,w,w,w,w,w,w,_,_,w,],
+				[w,_,w,_,_,_,_,_,_,_,_,_,w,w,_,w,],
+				[w,_,w,_,w,w,w,w,w,w,w,_,w,_,_,w,],
+				[w,_,w,_,_,_,_,_,w,_,w,_,w,_,w,w,],
+				[w,_,w,w,w,w,w,_,w,_,w,w,w,_,w,w,],
+				[w,_,_,_,_,_,_,_,_,_,w,_,_,_,_,w,],
+				[w,_,w,w,w,w,w,w,w,w,w,_,w,w,_,w,],
+				[w,_,w,_,_,_,_,_,w,_,_,_,w,_,_,w,],
+				[w,_,w,w,w,_,w,_,w,_,w,w,w,_,w,w,],
+				[w,_,_,_,w,_,w,_,w,_,_,_,w,_,_,w,],
+				[w,_,w,_,w,_,w,_,w,w,w,_,w,w,w,w,],
+				[w,h,w,_,_,_,w,_,_,_,w,_,_,_,_,t,],
+				[w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,]
+			];
+			var maze_x = 16;
+			var maze_y = 16;
+			var current_step = h;
+			// Funkcja rysująca tablcę
+			function showMaze(){
+				var mazeOutput = $("#maze");
+				mazeOutput.css({
+					width: 32*maze_x,
+					height: 32*maze_y
+				});
+				mazeOutput.html('');
+				for(var i=0;i<maze_y;i++){
+					for(var j=0;j<maze_x;j++){
+						var cell = $('<div>');
+						cell.attr('mx',j);
+						cell.attr('my',i);
+						cell.addClass('mazeElement');
+						switch(maze[i][j]){
+							case current_step+1:
+								cell.css('background','url("active.png")');
+								cell.text(maze[i][j]);
+								break;
+							case _:
+								cell.css('background','url("flo.png")');
+								break;
+							case h:
+								cell.css('background','url("hero.png")');
+								break;
+							case w:
+								cell.css('background','url("wall.png")');
+								break;
+							case t:
+								cell.css('background','url("target.png")');
+								break;
+							default:
+								cell.css('background','url("flo.png")');
+								cell.text(maze[i][j]);
+								break;
+						}
+						mazeOutput.append(cell);
+					}
+				}
+			}
+			function markWay(x,y){
+			}
+			function mazeSolverStep(){
+			}
+			function mazeSolver(){
+			}
+			function init(){
+				// Przypnij zdarzenia do przycisków
+				$('#do-step-button').button().click(mazeSolverStep);
+				$('#do-all-button').button().click(mazeSolver);
+				// Pokaz labirynt
+				showMaze();
+			}
+			// Uruchomienie funkcji po załadowaniu się strony w całości
+			$(init);
+		</script>
+	</body>
+</html>
